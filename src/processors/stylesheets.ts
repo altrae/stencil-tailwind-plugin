@@ -20,7 +20,7 @@ async function transformStyleStatement(opts: PluginConfigurationOptions, sourceF
   // Grab any css that needs to be injected by functional components that this component imported
   const injectedCss = getAllExternalCssDependencies(filename).css;
   const stringStyleRewriter = async (cssNode: StringLiteral) => {
-    const originalCss = cssNode.text;
+    const originalCss = cssNode?.text;
 
     const tailwindClasses = await processSourceTextForTailwindInlineClasses(opts, filename, originalCss);
     const reducedClasses = await reduceDuplicatedClassesFromFunctionalComponentInjection(opts, filename, tailwindClasses, injectedCss);
@@ -29,7 +29,8 @@ async function transformStyleStatement(opts: PluginConfigurationOptions, sourceF
   };
 
   const cssNode = walkTo(sourceFile, stringLiteralPath);
-  await stringStyleRewriter(cssNode as StringLiteral);
+
+  if (cssNode) await stringStyleRewriter(cssNode as StringLiteral);
 
   const printer = ts.createPrinter();
   return printer.printFile(sourceFile);

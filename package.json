@@ -69,5 +69,5 @@
     "test:update": "jest --runInBand --no-cache --updateSnapshot",
     "test:watch": "jest --runInBand --no-cache --watch"
   },
-  "version": "2.0.5"
+  "version": "2.0.5-1.4"
 }
