@@ -1,0 +1,7 @@
+allowBuilds:
+  '@swc/core': true
+  esbuild: true
+
+overrides:
+  glob: ^13.0.6
+  inflight: npm:lru-cache@^11.5.1

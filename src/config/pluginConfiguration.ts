@@ -7,8 +7,8 @@ import { makeDefaultTailwindConf } from '../helpers/tailwindcss';
 export const PluginConfigDefaults: PluginConfigOptionsDefaults = {
   DEFAULT: {
     enableDebug: false,
-    stripComments: false,
     minify: true,
+    stripComments: false,
   },
 };
 

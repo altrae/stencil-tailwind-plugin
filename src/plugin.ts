@@ -15,7 +15,7 @@ export function buildStart(): void {
 export function buildEnd(err?: Error): void {
   if (err) {
     error('Oh noes! Something went wrong!', err.message);
-    error(err.stack);
+    error(err.stack ?? '');
   }
   debug('Build completed');
 }

@@ -138,7 +138,7 @@ export function transform(opts: PluginConfigurationOptions) {
     if (shouldTransform) {
       const emitResult = transformSourceToIncludeNewTailwindStyles(sourceFile, escapedCss);
       if (emitResult.transformed) {
-        return emitResult.text;
+        return emitResult.text!;
       }
     }
     // No placeholder for the css found - register this css for a later style import

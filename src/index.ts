@@ -3,16 +3,16 @@ import { configureLogging } from './debug/logger';
 import { configuredTransform, postTransformDependencyUpdate, buildStart, buildEnd, processGlobalStyles } from './plugin';
 
 export type TailwindConfig = string;
-export type TailwindPluginFunctionalConfig = (filename: string) => TailwindConfig;
 export type TailwindPluginConfig = TailwindPluginFunctionalConfig;
+export type TailwindPluginFunctionalConfig = (filename: string) => TailwindConfig;
 
 export interface PluginConfigurationOptions {
   enableDebug?: boolean;
-  tailwindCssPath?: string;
   injectTailwindConfiguration?: TailwindPluginConfig;
-  stripComments?: boolean;
   minify?: boolean;
   optimise?: boolean;
+  stripComments?: boolean;
+  tailwindCssPath?: string;
 }
 
 export interface PluginConfigOptionsDefaults {
@@ -30,7 +30,7 @@ function configureOptions(opts?: PluginConfigurationOptions) {
   };
 
   const config = configurePluginOptions(options);
-  configureLogging(options.enableDebug);
+  configureLogging(options.enableDebug ?? false);
 
   return config;
 }
@@ -48,10 +48,10 @@ export default function tailwindPlugin(opts?: PluginConfigurationOptions) {
   const config = configureOptions(opts);
 
   return {
+    buildEnd,
+    buildStart,
     name: 'tailwind',
     transform: configuredTransform(config),
-    buildStart,
-    buildEnd,
   };
 }
 
@@ -59,11 +59,11 @@ export function tailwindHMR(opts?: PluginConfigurationOptions) {
   const config = configureOptions(opts);
 
   return {
-    pluginType: 'css',
-    name: 'tailwind-hmr',
-    transform: postTransformDependencyUpdate(config),
-    buildStart,
     buildEnd,
+    buildStart,
+    name: 'tailwind-hmr',
+    pluginType: 'css',
+    transform: postTransformDependencyUpdate(config),
   };
 }
 
@@ -71,10 +71,10 @@ export function tailwindGlobal(opts?: PluginConfigurationOptions) {
   const config = configureOptions(opts);
 
   return {
-    pluginType: 'css',
-    name: 'tailwind-global',
-    transform: processGlobalStyles(config),
-    buildStart,
     buildEnd,
+    buildStart,
+    name: 'tailwind-global',
+    pluginType: 'css',
+    transform: processGlobalStyles(config),
   };
 }
