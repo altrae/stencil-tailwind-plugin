@@ -288,7 +288,7 @@ Functional components can be composed of other functional components. However, t
 This plugin requires the following peer dependencies:
   - @tailwindcss/postcss
   - tailwindcss
-  - typescript
+  - TypeScript `>=6.0.3 <7`
 
 These are provided as peer dependencies so consumers can override the versions.
 
@@ -301,7 +301,12 @@ pnpm install
 
 Run tests:
 ```bash
-pnpm tests
+pnpm test
+```
+
+Run the TypeScript compiler without emitting files:
+```bash
+pnpm typecheck
 ```
 
 ## Honourable mentions

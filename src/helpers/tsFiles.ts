@@ -29,11 +29,11 @@ function doesNodeMatch(walkPath: ASTMatcher[]) {
       }
 
       if (pathNode.name) {
-        return node['name'] && node['name'].escapedText === pathNode.name;
+        return ts.isGetAccessorDeclaration(node) && ts.isIdentifier(node.name) && node.name.text === pathNode.name;
       }
 
       if (pathNode.initializerKind) {
-        return node['initializer'] && node['initializer'].kind === pathNode.initializerKind;
+        return ts.isVariableDeclaration(node) && node.initializer?.kind === pathNode.initializerKind;
       }
 
       return true;
@@ -48,7 +48,7 @@ export function walkTo(file: SourceFile, walkPath: ASTMatcher[]) {
 
   const hasReachedLastSelector = () => treeLevel === walkPath.length;
 
-  function walkChildNodeTree(node: Node) {
+  function walkChildNodeTree(node: Node): Node | undefined {
     if (doesMatch(node, treeLevel)) {
       treeLevel++;
       if (hasReachedLastSelector()) {
@@ -61,7 +61,7 @@ export function walkTo(file: SourceFile, walkPath: ASTMatcher[]) {
 }
 
 export function walkAll(file: SourceFile, nodeKind: SyntaxKind, cb: WalkerNodeCallback) {
-  function walkChildNodeTree(node: Node) {
+  function walkChildNodeTree(node: Node): Node | undefined {
     if (node.kind === nodeKind) {
       if (cb(node)) {
         return node;
@@ -83,8 +83,8 @@ function getNodeToTransform(walkPath: ASTMatcher[], action: ASTMatchCallback) {
   const hasReachedLastSelector = () => treeLevel === walkPath.length;
 
   return function(context: TransformationContext): Transformer<Node> {
-    function visit(node: Node): Node | Array<Node> {
-      debug('[Typescript]', 'Visiting ' + SyntaxKind[node.kind]);
+    function visit(node: Node): Node {
+      debug('[TypeScript]', 'Visiting ' + SyntaxKind[node.kind]);
 
       if (doesMatch(node, treeLevel)) {
         treeLevel++;
@@ -92,7 +92,7 @@ function getNodeToTransform(walkPath: ASTMatcher[], action: ASTMatchCallback) {
           return action(node);
         }
 
-        debug('[Typescript]', 'Moving to next tree level', treeLevel, 'looking for', SyntaxKind[walkPath[treeLevel].nodeKind]);
+        debug('[TypeScript]', 'Moving to next tree level', treeLevel, 'looking for', SyntaxKind[walkPath[treeLevel].nodeKind]);
         node = ts.visitEachChild(node, visit, context);
         return node;
       }
@@ -101,7 +101,7 @@ function getNodeToTransform(walkPath: ASTMatcher[], action: ASTMatchCallback) {
     }
 
     return function(node: Node): Node {
-      return ts.visitNode(node, visit);
+      return ts.visitNode(node, visit) ?? node;
     };
   };
 }

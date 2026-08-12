@@ -5,19 +5,22 @@ import mediaCombine from 'postcss-combine-media-query';
 import discardComments from 'postcss-discard-comments';
 
 async function loadPlugins() {
-  const ctx = { };
+  const ctx: postcssrc.ConfigContext = {};
 
   try {
-    const configPlugins = await postcssrc(ctx as unknown);
-    return configPlugins.plugins;
-  } catch (err) {
-      if (err.message.startsWith('No PostCSS Config found in')) {
-        return [];
-      }
+    const configPlugins = await postcssrc(ctx);
 
-      throw new Error(
-        `'stencil-tailwind-plugin' is not able to resolve modules required from configuration files. Make sure it is installed\nError: ${err.message}`,
-      );
+    return configPlugins.plugins;
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (message.startsWith('No PostCSS Config found in')) {
+      return [];
+    }
+
+    throw new Error(
+      `'stencil-tailwind-plugin' is unable to resolve modules required from configuration files. Make sure it is installed\nError: ${message}`,
+    );
   }
 }
 
@@ -29,6 +32,7 @@ function findIndexOfPlugin(configPlugins: postcssrc.ResultPlugin[], name: string
 
     if (typeof plugin === 'function') {
       const createdPlugin = (plugin as typeof Function)();
+
       return 'postcssPlugin' in createdPlugin && createdPlugin.postcssPlugin === name;
     }
 
@@ -37,14 +41,12 @@ function findIndexOfPlugin(configPlugins: postcssrc.ResultPlugin[], name: string
 }
 
 interface PostcssPlugins {
-  before: postcssrc.ResultPlugin[];
   after: postcssrc.ResultPlugin[];
+  before: postcssrc.ResultPlugin[];
 }
 
 export function stripCommentsPlugin() {
-  return discardComments({
-    removeAll: true,
-  });
+  return discardComments({ removeAll: true });
 }
 
 export function getMinifyPlugins() {
@@ -60,11 +62,11 @@ export async function getPostcssPlugins(): Promise<PostcssPlugins> {
 
   const configPluginTailwindIdx = findIndexOfPlugin(configPlugins, '@tailwindcss/postcss');
 
-  const beforeTailwind = configPluginTailwindIdx === -1 ? [] : configPlugins.slice(0, configPluginTailwindIdx);
   const afterTailwind = configPluginTailwindIdx === -1 ? configPlugins : configPlugins.slice(configPluginTailwindIdx + 1);
+  const beforeTailwind = configPluginTailwindIdx === -1 ? [] : configPlugins.slice(0, configPluginTailwindIdx);
 
   return {
-    before: beforeTailwind,
     after: afterTailwind,
+    before: beforeTailwind,
   };
 }

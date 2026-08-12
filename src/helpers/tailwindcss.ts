@@ -10,7 +10,7 @@ function applyRawEscaping(css: string) {
     .replace(/\n/g, '')
     .replace(/`/g, '\\`')
     .replace(/\t/g, ' ')
-    .replace(/'/g, "%27");
+    .replace(/'/g, '%27');
 }
 
 function buildTailwindConfigurationForPostCss(configuration: PluginConfigurationOptions, filePath: string) {
@@ -52,7 +52,13 @@ async function getPostcssPluginsWithTailwind(configuration: PluginConfigurationO
 }
 
 async function processTailwindPostcss(configuration: PluginConfigurationOptions, filename: string, sourceCss?: string) {
-  const tailwindCssConfiguration = configuration.injectTailwindConfiguration(filename);
+  const { injectTailwindConfiguration } = configuration;
+
+  if (!injectTailwindConfiguration) {
+    throw new Error('Tailwind configuration has not been initialized.');
+  }
+
+  const tailwindCssConfiguration = injectTailwindConfiguration(filename);
 
   const cssToProcess = `${tailwindCssConfiguration} ${sourceCss ?? ''}`;
 

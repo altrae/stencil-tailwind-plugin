@@ -76,7 +76,7 @@ function addStylePropertyGetter(sourceFile: SourceFile, css: string) {
 
 function registerAllImports(sourceFile: SourceFile, filename: string) {
   const file = path.parse(filename);
-  const importedFiles = [];
+  const importedFiles: string[] = [];
 
   function handleImportDeclaration(node: Node): boolean {
     const importDecl = node as ImportDeclaration;
@@ -118,7 +118,7 @@ function preserveTailwindCssEscaping(css: string) {
 
 export function transform(opts: PluginConfigurationOptions) {
   return async (sourceText: string, filename: string) => {
-    debug('[Typescript]', 'Processing source file:', filename);
+    debug('[TypeScript]', 'Processing source file:', filename);
 
     const sourceFile = loadTypescriptCodeFromMemory(sourceText);
     const shouldTransform = shouldTransformSource(sourceFile);

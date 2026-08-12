@@ -12,7 +12,7 @@ export const PluginConfigDefaults: PluginConfigOptionsDefaults = {
   },
 };
 
-function fetchTailwindCssContents(tailwindCssPath?: string) {
+function fetchTailwindCssContents(tailwindCssPath: string) {
   const configurationPath = path.resolve(tailwindCssPath);
   const tailwindCssContents = fs.readFileSync(configurationPath).toString();
 

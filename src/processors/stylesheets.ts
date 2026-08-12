@@ -5,7 +5,7 @@ import { processSourceTextForTailwindInlineClasses, reduceDuplicatedClassesFromF
 import { getAllExternalCssDependencies } from '../store/store';
 import { PluginConfigurationOptions } from '..';
 
-async function transformStyleStatement(opts: PluginConfigurationOptions, sourceFile: SourceFile, sourceText: string, filename: string) {
+async function transformStyleStatement(opts: PluginConfigurationOptions, sourceFile: SourceFile, filename: string) {
   // Stencil produces stylesheet in esm, so need to read and emit back. Stencil outputs the css in the first
   // variable statement in the file. As such there is no clean way of detecting this, so just go grab the
   // first statement
@@ -36,15 +36,15 @@ async function transformStyleStatement(opts: PluginConfigurationOptions, sourceF
   return printer.printFile(sourceFile);
 }
 
-// This function processes css that is contained as a string in a typescript file
-// This transform is used when stencil passes a typescript encoded css blob rather than
+// This function processes css that is contained as a string in a TypeScript file
+// This transform is used when stencil passes a TypeScript encoded css blob rather than
 // the raw file
 export function transformCssFromTsxFileFormat(opts: PluginConfigurationOptions) {
   return async (sourceText: string, filename: string): Promise<string> => {
     debug('[Stylesheets]', 'Processing css from tsx source file:', filename);
 
     const sourceFile = loadTypescriptCodeFromMemory(sourceText);
-    const transformed = await transformStyleStatement(opts, sourceFile, sourceText, filename);
+    const transformed = await transformStyleStatement(opts, sourceFile, filename);
 
     return transformed;
   };

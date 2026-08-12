@@ -32,6 +32,7 @@
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
+    "typescript": "^6.0.3",
     "typescript-eslint": "^8.62.0"
   },
   "name": "@altrae.dev/stencil-tailwind-plugin",
@@ -51,7 +52,7 @@
   "peerDependencies": {
     "@tailwindcss/postcss": ">=4.1.1",
     "tailwindcss": ">=4.1.1",
-    "typescript": ">=5.8.2"
+    "typescript": ">=6.0.3 <7"
   },
   "publishConfig": {
     "access": "public",
@@ -67,7 +68,8 @@
     "prepublishOnly": "pnpm build",
     "test": "jest --ci --runInBand",
     "test:update": "jest --runInBand --no-cache --updateSnapshot",
-    "test:watch": "jest --runInBand --no-cache --watch"
+    "test:watch": "jest --runInBand --no-cache --watch",
+    "typecheck": "tsc --noEmit"
   },
-  "version": "2.0.5-1.4"
+  "version": "2.0.5-1.5"
 }
