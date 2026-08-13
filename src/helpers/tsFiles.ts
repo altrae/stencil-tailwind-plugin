@@ -1,4 +1,4 @@
-import ts, { ModifierSyntaxKind, Node, ScriptTarget, SourceFile, SyntaxKind, TransformationContext, Transformer } from 'typescript';
+import ts, { ModifierSyntaxKind, Node, ScriptTarget, SourceFile, SyntaxKind, TransformationContext, Transformer } from '@typescript/typescript6';
 import { debug } from '../debug/logger';
 
 export interface TransformedResult {

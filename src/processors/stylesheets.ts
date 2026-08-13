@@ -1,4 +1,4 @@
-import ts, { SourceFile, StringLiteral, SyntaxKind } from 'typescript';
+import ts, { SourceFile, StringLiteral, SyntaxKind } from '@typescript/typescript6';
 import { debug } from '../debug/logger';
 import { loadTypescriptCodeFromMemory, makeMatcher, walkTo } from '../helpers/tsFiles';
 import { processSourceTextForTailwindInlineClasses, reduceDuplicatedClassesFromFunctionalComponentInjection } from '../helpers/tailwindcss';

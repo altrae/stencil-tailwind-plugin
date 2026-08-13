@@ -2,6 +2,7 @@
   "author": "Richard Shephard",
   "bugs": { "url": "https://github.com/altrae/stencil-tailwind-plugin/issues" },
   "dependencies": {
+    "@typescript/typescript6": "^6.0.2",
     "chalk": "^4.1.2",
     "cssnano": "^7.1.9",
     "fs-extra": "^11.3.5",
@@ -23,6 +24,7 @@
     "@types/jest": "^29.5.14",
     "@types/node": "^22.20.0",
     "@types/postcss-import": "^14.0.3",
+    "@typescript/native": "npm:typescript@^7.0.2",
     "@typescript-eslint/eslint-plugin": "^8.62.0",
     "@typescript-eslint/parser": "^8.62.0",
     "eslint": "^9.39.4",
@@ -32,7 +34,7 @@
     "ts-jest": "^29.4.11",
     "ts-node": "^10.9.2",
     "tsup": "^8.5.1",
-    "typescript": "^6.0.3",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.62.0"
   },
   "name": "@altrae.dev/stencil-tailwind-plugin",
@@ -51,8 +53,7 @@
   "module": "dist/index.esm.js",
   "peerDependencies": {
     "@tailwindcss/postcss": ">=4.1.1",
-    "tailwindcss": ">=4.1.1",
-    "typescript": ">=6.0.3 <7"
+    "tailwindcss": ">=4.1.1"
   },
   "publishConfig": {
     "access": "public",

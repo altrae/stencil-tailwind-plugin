@@ -26,6 +26,7 @@
   "include": ["src/index.ts", "src/types/**/*.d.ts"],
   "ts-node": {
     "compilerOptions": {
+      "ignoreDeprecations": "6.0",
       "moduleResolution": "node10"
     }
   }
